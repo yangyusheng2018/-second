@@ -1,0 +1,99 @@
+{include file="/public/header1"}
+<article class="cl pd-20">
+    <form action="" method="post" class="form form-horizontal" id="form-member-add">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>用户名：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="" id="username" name="username">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red"></span>昵称：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="" id="name" name="name">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>密码：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="password" class="input-text" value="" placeholder="" id="password" name="password">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>确认密码：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="password" class="input-text" value="" placeholder="" id="password1" name="password1">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>性别：</label>
+            <div class="formControls col-xs-8 col-sm-9 skin-minimal">
+                <div class="radio-box">
+                    <input value="1" name="sex" type="radio" id="sex-1">
+                    <label for="sex-1">男</label>
+                </div>
+                <div class="radio-box">
+                    <input value="0" type="radio" id="sex-2" name="sex">
+                    <label for="sex-2">女</label>
+                </div>
+                <div class="radio-box">
+                    <input value="2" type="radio" id="sex-3" name="sex" checked >
+                    <label for="sex-3">保密</label>
+                </div>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>手机：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="" id="phone" name="phone">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>邮箱：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" placeholder="@" name="email" value="" id="email">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>地址：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" placeholder="" name="address" value="" id="address">
+            </div>
+        </div>
+
+
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <input class="btn btn-primary radius" type="button" name="submit" id="submit" value="&nbsp;&nbsp;注册&nbsp;&nbsp;">
+            </div>
+        </div>
+    </form>
+</article>
+
+{include file="/public/js1"}
+<script type="text/javascript">
+
+    $("#submit").on("click", function(event){
+        $.ajax({
+            type: "POST",
+            url: "{:url('home/member/add_member')}",
+            data: $("#form-member-add").serialize(),
+            dataType: "json",
+            success: function(data){
+                if (data.status == 1) {
+                    alert(data.message);
+                    window.parent.location.reload(); //刷新父页面
+                    var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                    parent.layer.close(index);  // 关闭layer
+                } else {
+                    alert(data.message);
+
+                }
+            }
+        });
+
+    })
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

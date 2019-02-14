@@ -1,0 +1,133 @@
+{include file="/pubulic/header"}
+{include file="/pubulic/body-header"}
+<!--/_header 作为公共模版分离出去-->
+
+{include file="/pubulic/menu"}
+<div class="dislpayArrow hidden-xs"> <a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a> </div>
+<!--/_menu 作为公共模版分离出去-->
+<form action="" method="post" class="form form-horizontal" id="form-member-add">
+    <section class="Hui-article-box">
+        <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 产品中心 <span class="c-gray en">分类管理</span> </nav>
+        <div class="Hui-article">
+            <article class="cl pd-20">
+                <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l">
+
+			</span>
+                </div>
+                <div class="mt-20">
+                    <table class="table table-border table-bordered table-hover table-bg table-sort" style="width: 40%;float: left">
+                        <tbody>
+                        <tr class="text-c"><td>显示所有分类（点击分类名称可编辑分类）</td></tr>
+                        {volist name="data" id="pp"}
+
+                        <tr class="text-c">
+
+                            <td style="text-align: left; border: 0px; padding: 2px">
+                                           {if condition="$pp.level eq 1"}{else /}
+                            <?php echo str_repeat('---', $pp['level']*1);?>
+                            {/if}
+
+                                {$pp.name}
+                                <span style="float: right"><a style="width: 100%" title="编辑" href="javascript:;" onclick="member_edit('编辑','{:url("cate/cate_edit",["id"=>$pp["id"]])}','2','','510')"><i class="Hui-iconfont">&#xe6df;</i></a></span>
+                                <span style="float: right">|</span>
+                                <span style="float: right"><a style="text-decoration:none" class="ml-5" onClick="brand_del(this,'{$pp.id}')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></span>
+                            </td>
+
+
+                        </tr>
+
+                        {/volist}
+                        </tbody>
+                    </table>
+                    <article class="cl pd-20" style="width: 50%; float: left">
+                        <form action="" method="post" class="form form-horizontal" id="form-member-add">
+
+                            <div class="row cl">
+                                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>选择父级分类：</label>
+                                <div class="formControls col-xs-8 col-sm-9">
+                            <select name="pid" style="width: 100%">
+                                <option value="0">添加顶级分类</option>
+                                {volist name="data" id="pp"}
+                                <option value="{$pp.id}"> <?php echo str_repeat('---', $pp['level']*1);?>{$pp.name}</option>
+                                {/volist}
+                            </select>
+                                </div>
+                            </div>
+                            <div class="row cl">
+                                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>分类名称：</label>
+                                <div class="formControls col-xs-8 col-sm-9">
+                                    <input type="text" class="input-text" value="" placeholder="" id="name" name="name">
+                                </div>
+                            </div>
+
+                            <div class="row cl">
+                                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>描述：</label>
+                                <div class="formControls col-xs-8 col-sm-9">
+                                    <input type="text" class="input-text" value="" placeholder="" id="description" name="description">
+                                </div>
+                            </div>
+
+                            <div class="row cl">
+                                <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                                    <input class="btn btn-primary radius" type="button" name="submit" id="submit"  value="&nbsp;&nbsp;添加&nbsp;&nbsp;">
+                                </div>
+                            </div>
+                        </form>
+                    </article>
+
+
+                    <!--<table class="table table-border table-bordered table-hover table-bg table-sort" style="width: 40%;float: left">-->
+                        <!--<tbody>-->
+
+                        <!--<div style="width: 100%">-->
+
+
+                        <!--</div>-->
+                        <!--<div style="width: 100%">-->
+                            <!--<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>品牌名称：</label>-->
+                            <!--<div class="formControls col-xs-8 col-sm-9">-->
+                                <!--<input type="text" class="input-text" value="" placeholder="" id="name" name="name">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--</tbody>-->
+                    <!--</table>-->
+
+                </div>
+            </article>
+        </div>
+    </section>
+{include file="/pubulic/js"}
+<script type="text/javascript">
+
+    function brand_del(obj,id){
+        layer.confirm('确认要删除该分类以及其子分类吗？',function(index){
+            $.get("{:url('cate/delete_cate')}",{id:id});
+            $(obj).parents("tr").remove();
+            layer.msg('已删除!',{icon:1,time:1000});
+        });
+    }
+    $("#submit").on("click", function(event){
+        $.ajax({
+            type: "POST",
+            url: "{:url('cate/add_cate')}",
+            data: $("#form-member-add").serialize(),
+            dataType: "json",
+            success: function(data){
+                if (data.status == 1) {
+                    alert(data.message);
+                    window.parent.location.reload(); //刷新父页面
+                    var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                    parent.layer.close(index);  // 关闭layer
+                } else {
+                    alert(data.message);
+
+                }
+            }
+        });
+
+    })
+
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

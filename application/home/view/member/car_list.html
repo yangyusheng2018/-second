@@ -1,0 +1,284 @@
+{include file="/public/header"}
+
+<section id="main">
+    <div class="container_12">
+        <div id="content" class="grid_12">
+            <header>
+                <h1 class="page_title">购物车</h1>
+            </header>
+
+            <article>
+                <table class="cart_product">
+                    <tr class="bg">
+                        <th class="images">图片</th>
+                        <th class="name">名称</th>
+                        <th class="price">价格</th>
+                        <th class="qty">数量</th>
+                        <th class="subtotal">总价</th>
+                        <th class="close"> </th>
+                    </tr>
+                    <?php $order_sum=0;
+                       $order_goods_id="";
+                        $order_mumber="";
+                        ?>
+                    {volist name="car" id="pp"}
+                    <?php
+                    $img=explode(",",$pp["imageurl"]);
+                    $total=$pp["number"]*$pp["price"];
+                    $order_sum+=$total;
+                    $order_goods_id.=$pp["goods_id"].",";
+                     $order_mumber.=$pp["number"].",";
+                    ?>
+                    <tr>
+                        <td class="images"><a href="{:url("home/goods/detail",["id"=>$pp["goods_id"]])}"><img src="{$img.1}" alt="Product 12" title=""></a></td>
+                        <td class="name">{$pp.goods_name}</td>
+                        <td class="price">{$pp.price}元</td>
+                        <td class="qty">{$pp.number}</td>
+                        <td class="subtotal">{$total}</td>
+                        <td class="close"> <a onClick="del_car1(this,'{$pp.goods_id}')" href="javascript:;" title="close" class="close"></a></td>
+                    </tr>
+                    {/volist}
+                    <tr>
+                        <td colspan="7" class="cart_but">
+                            <a href="{:url("home/index/index")}" class="continue"><img src="__STATIC__/zhuanshi/img/cont.png" alt="" title=""> 继续购物</a>
+                        </td>
+                    </tr>
+                </table>
+
+                <form action="" method="post" class="form form-horizontal" id="form-order-add">
+                <div id="cart_forms">
+                    {notempty name="$Request.session.member_id"}
+                    <div class="grid_8">
+                        <div class="bottom_block estimate">
+                            <h3>选择地址</h3>
+                                <p>
+                                    <select name="address_id">
+                                        {volist name="address" id="pp"}
+                                        <option value="{$pp.id}">{$pp.address}</option>
+                                        {/volist}
+                                    </select>
+                                    <a onclick="address_add('添加新地址','/home/address/address_add')" href="javascript:;" class="update">添加新地址</a>
+                                </p>
+                            <h3>选择支付方式</h3>
+                            <p>
+                                <select name="payment">
+                                    <option value="1">支付宝</option>
+                                    <option value="2">微信</option>
+                                    <option value="3">网银</option>
+                                    <option value="4">信用卡</option>
+                                    <option value="5">账户余额</option>
+                                    <option value="6">到付</option>
+                                </select>
+
+                            </p>
+                            <h3>选择配送方式</h3>
+                            <p>
+                                <select name="delivery">
+                                    <option value="1">申通</option>
+                                    <option value="2">圆通</option>
+                                </select>
+
+                            </p>
+
+                        </div><!-- .estimate -->
+                    </div><!-- .grid_4 -->
+                    {/notempty}
+                    <div class="grid_4">
+                        <input hidden id="goods_ids" name="goods_ids" value="{$order_goods_id}">
+                        <input hidden id="numbers" name="numbers" value="{$order_mumber}">
+                        <input hidden id="total" name="total" value="{$order_sum}">
+                        <div class="bottom_block total">
+                            <table class="subtotal">
+                                <tr class="grand_total">
+                                    <td>订单总金额</td><td class="price">{$order_sum}元</td>
+                                </tr>
+                            </table>
+                            {empty name="$Request.session.member_id"}
+                            <li><a href="javascript:;" onclick="member_login('登录','/home/member/login','','600')" class="btn btn-primary radius">登录后才能提交订单</a></li>
+
+                            {else /}
+                            <button class="checkout"> <input type="button" name="submit" id="submit" value="&nbsp;&nbsp;提交订单&nbsp;&nbsp;"></button>
+
+
+                            {/empty}
+
+
+                        </div><!-- .total -->
+                    </div><!-- .grid_4 -->
+
+                    <div class="clear"></div>
+                </div><!-- #cart_forms -->
+
+                </form>
+                <div class="clear"></div>
+            </article>
+
+            <div class="related grid_12">
+
+                <div class="c_header">
+                    <div class="grid_10">
+                        <h2>Related Products</h2>
+                    </div><!-- .grid_10 -->
+
+                    <div class="grid_2">
+                        <a id="next_c1" class="next arows" href="#"><span>Next</span></a>
+                        <a id="prev_c1" class="prev arows" href="#"><span>Prev</span></a>
+                    </div><!-- .grid_2 -->
+                </div><!-- .c_header -->
+
+                <div class="related_list">
+                    <ul id="listing" class="products">
+
+                        <li>
+                            <article class="grid_3 article">
+                                <img class="sale" src="__STATIC__/zhuanshi/img/sale.png" alt="Sale">
+                                <div class="prev">
+                                    <a href="product_page.html"><img src="__STATIC__/zhuanshi/img/content/product1.png" alt="Product 1" title=""></a>
+                                </div><!-- .prev -->
+
+                                <h3 class="title">handmade Emerald Cut<br> Emerald Ring</h3>
+                                <div class="cart">
+                                    <div class="price">
+                                        <div class="vert">
+                                            $550.00
+                                            <div class="price_old">$725.00</div>
+                                        </div>
+                                    </div>
+                                    <a href="#" class="obn"></a>
+                                    <a href="#" class="like"></a>
+                                    <a href="#" class="bay"><img src="__STATIC__/zhuanshi/img/bg_cart.png" alt="Buy" title=""></a>
+                                </div><!-- .cart -->
+                            </article><!-- .grid_3.article -->
+                        </li>
+
+                    </ul><!-- #listing -->
+                </div><!-- .brands_list -->
+            </div><!-- .related -->
+
+            <div class="clear"></div>
+        </div><!-- #content -->
+
+        <div class="clear"></div>
+    </div><!-- .container_12 -->
+</section><!-- #main -->
+<div class="clear"></div>
+
+<footer>
+    <div class="footer_navigation">
+        <div class="container_12">
+            <div class="grid_3">
+                <h3>Contact Us</h3>
+                <ul class="f_contact">
+                    <li>49 Archdale, 2B Charlestone</li>
+                    <li>+777 (100) 1234</li>
+                    <li>mail@example.com</li>
+                </ul><!-- .f_contact -->
+            </div><!-- .grid_3 -->
+
+            <div class="grid_3">
+                <h3>Information</h3>
+                <nav class="f_menu">
+                    <ul>
+                        <li><a href="#">About As</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                        <li><a href="#">Secure payment</a></li>
+                    </ul>
+                </nav><!-- .private -->
+            </div><!-- .grid_3 -->
+
+            <div class="grid_3">
+                <h3>Costumer Servise</h3>
+                <nav class="f_menu">
+                    <ul>
+                        <li><a href="#">Contact As</a></li>
+                        <li><a href="#">Return</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Site Map</a></li>
+                    </ul>
+                </nav><!-- .private -->
+            </div><!-- .grid_3 -->
+
+            <div class="grid_3">
+                <h3>My Account</h3>
+                <nav class="f_menu">
+                    <ul>
+                        <li><a href="#">My Account</a></li>
+                        <li><a href="#">Order History</a></li>
+                        <li><a href="#">Wish List</a></li>
+                        <li><a href="#">Newsletter</a></li>
+                    </ul>
+                </nav><!-- .private -->
+            </div><!-- .grid_3 -->
+
+            <div class="grid_12 newsletter-payments">
+                <div class="newsletter">
+                    <div class="icon-mail">Newsletter</div>
+                    <p>Subscribe to notifications about discounts from our store</p>
+                    <form>
+                        <input type="submit" value="">
+                        <input type="email" name="newsletter" value="" placeholder="Enter your email address...">
+                    </form>
+                </div><!-- .newsletter -->
+
+                <div class="payments">
+                    <img src="img/payments.png" alt="Payments">
+                </div><!-- .payments -->
+            </div><!-- .grid_12.newsletter-payments -->
+
+            <div class="clear"></div>
+        </div><!-- .container_12 -->
+    </div><!-- .footer_navigation -->
+
+    <div class="footer_info">
+        <div class="container_12">
+            <div class="grid_6">
+                <p class="copyright">© Diamond Store Theme, 2013.More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></p>
+            </div><!-- .grid_6 -->
+
+            <div class="grid_6">
+                <div class="soc">
+                    <a class="google" href="#"></a>
+                    <a class="twitter" href="#"></a>
+                    <a class="facebook" href="#"></a>
+                </div><!-- .soc -->
+            </div><!-- .grid_6 -->
+
+            <div class="clear"></div>
+        </div><!-- .container_12 -->
+    </div><!-- .footer_info -->
+</footer>
+{include file="/public/js"}
+<script type="text/javascript">
+
+    function del_car1(obj,id){
+        layer.confirm('确认要删除吗？',function(index){
+            $.get("{:url('car/del_car')}",{id:id});
+            $(obj).closest("tr").remove();
+            layer.msg('已删除!',{icon:1,time:1000});
+        });
+    }
+
+    $("#submit").on("click", function(event){
+        $.ajax({
+            type: "POST",
+            url: "{:url('order/add_order')}",
+            data: $("#form-order-add").serialize(),
+            dataType: "json",
+            success: function(data){
+                if (data.status == 1) {
+                    alert(data.message);
+                    window.location.href="{:url('order/orderbyid')}"+"?id="+data.id;
+                } else {
+                    alert(data.message);
+
+                }
+            }
+        });
+
+    })
+
+</script>
+</body>
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+</html>

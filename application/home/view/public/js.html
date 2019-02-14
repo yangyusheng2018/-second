@@ -1,0 +1,106 @@
+<script type="text/javascript" src="__STATIC__/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript">
+    // 如果需要给后台返值的话，返回 $(".star_score span.select").size()的值即可。
+    $(function(){
+        //生成5个星星
+        for(var i=0;i<5;i++){
+            var _html = '<span title="'+parseInt(i+1)+'分"></span>';
+            $(".star_score").append(_html);
+        }
+        //鼠标滑过，星星背景图片改成选中图片
+        $(".star_score span").hover(function(){
+            var index = $(this).index();
+            for(var i = 0; i <=index; i++){
+                $(".star_score span").eq(i).addClass("active");
+            }
+            //鼠标移除去掉激活效果
+        },function(){
+            $(".star_score span").removeClass("active");
+        });
+
+        //星星点击，这颗星星之前的所有星星加上选中效果
+        $(".star_score span").on("click",function(){
+            var x = $(this).index();
+            $(".star_score span").removeClass('select');
+            for (var i = 0; i <= x; i++) {
+                $(".star_score span").eq(i).addClass('select');
+            };
+        })
+
+
+    })
+
+    function add_goods(obj,id){
+        layer.confirm('确认添加到购物车吗？',function(index){
+            $.get("{:url('car/add_car')}",{id:id});
+            layer.msg('已加入!',{icon: 6,time:1000});
+            window.location.reload();
+        });
+    }
+    function loginout(){
+        layer.confirm('确认退出登录吗',function(index){
+            $.get("{:url('member/logout')}");
+            layer.msg('已退出!',{icon: 6,time:1000});
+            window.location.reload();
+        });
+    }
+    function add_obn(obj,id){
+        layer.confirm('确认加入比较队列吗？',function(index){
+
+            layer.msg('已加入!',{icon: 5,time:1000});
+        });
+    }
+    function add_like(obj,id){
+        layer.confirm('确认收藏吗？',function(index){
+            $.get("{:url('collections/add_collections')}",{id:id});
+            layer.msg('已加入!',{icon: 6,time:1000});
+        });
+    }
+    function del_car(obj,id){
+        layer.confirm('确认要删除吗？',function(index){
+            $.get("{:url('car/del_car')}",{id:id});
+            $(obj).closest("li").remove();
+            layer.msg('已删除!',{icon:1,time:1000});
+        });
+    }
+    function member_add(title,url,w,h){
+        layer_show(title,url,w,h);
+    }
+    function address_add(title,url,w,h){
+        layer_show(title,url,w,h);
+    }
+    function member_login(title,url,w,h){
+        layer_show(title,url,w,h);
+    }
+
+    function layer_show(title,url,w,h){
+        if (title == null || title == '') {
+            title=false;
+        };
+        if (url == null || url == '') {
+            url="404.html";
+        };
+        if (w == null || w == '') {
+            w=800;
+        };
+        if (h == null || h == '') {
+            h=($(window).height() - 50);
+        };
+        layer.open({
+            type: 2,
+            area: [w+'px', h +'px'],
+            fix: false, //不固定
+            maxmin: true,
+            shade:0.4,
+            title: title,
+            content: url
+        });
+    }
+
+    /*关闭弹出框口*/
+    function layer_close(){
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.layer.close(index);
+    }
+
+</script>

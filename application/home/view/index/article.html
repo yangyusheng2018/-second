@@ -1,0 +1,100 @@
+{include file="/public/header"}
+
+
+<section id="main">
+    <div class="container_12">
+        <div id="content" class="grid_9">
+            <header>
+                <h1 class="page_title">{$data.title}</h1>
+            </header>
+
+            <article>
+                <div class="content_article">
+                    {$data.content}
+                </div><!-- .content_article -->
+                <div class="footer_article">
+                    <time datetime="{$data.create_time}">{$data.create_time}</time>
+                </div>
+            </article>
+
+
+            <div class="clear"></div>
+        </div><!-- #content -->
+
+        <div id="sidebar" class="grid_3">
+            <aside id="categories_nav">
+                <header class="aside_title">
+                    <h3>品牌</h3>
+                </header>
+
+                <nav class="right_menu">
+                    <ul>
+                        {volist name="branddata" id="pp"}
+
+                        <li><a href="{:url("home/goods/bybrand",["id"=>$pp["id"]])}">{$pp.name}</a></li>
+
+                        {/volist}
+
+                    </ul>
+                </nav><!-- .right_menu -->
+            </aside><!-- #categories_nav -->
+
+            <aside id="categories_nav">
+                <header class="aside_title">
+                    <h3>分类</h3>
+                </header>
+
+                <nav class="right_menu">
+                    <ul>
+                        {volist name="branddata" id="pp"}
+
+                        <li><a href="{:url("home/goods/bybrand",["id"=>$pp["id"]])}">{$pp.name}</a></li>
+
+                        {/volist}
+
+                    </ul>
+                </nav><!-- .right_menu -->
+            </aside><!-- #categories_nav -->
+
+
+            <aside id="specials" class="specials">
+                <header class="aside_title">
+                    <h3>特价</h3>
+                </header>
+
+                <ul>
+                    {volist name="discount" id="pp" offset="1" length='4'}
+                    <?php $img=explode(",",$pp["imageurl"]);?>
+                    <?php $prices=$pp["discount"]*$pp["saleprice"]*0.1;?>
+                    <li>
+                        <div class="prev">
+                            <a href="{:url("home/goods/detail",["id"=>$pp["id"]])}"><img src="{$img.2}" alt="{$pp.goods_name}" title="{$pp.goods_name}"></a>
+
+                        </div>
+
+                        <div class="cont">
+
+                            <a href="{:url("home/goods/detail",["id"=>$pp["id"]])}">{$pp.goods_name}</a>
+                            <div class="prise"><span class="old">{$pp.saleprice}元</span> {$prices}元</div>
+                        </div>
+                    </li>
+                    {/volist}
+
+                </ul>
+            </aside><!-- #specials -->
+
+
+
+
+        </div><!-- .sidebar -->
+        <div class="clear"></div>
+    </div><!-- .container_12 -->
+</section><!-- #main -->
+<div class="clear"></div>
+
+{include file="/public/footer"}
+{include file="/public/js"}
+
+</body>
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+</html>

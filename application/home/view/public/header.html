@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+
+    <title>Home</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+    <link rel="shortcut icon" href="__STATIC__/zhuanshi/favicon.ico">
+
+    <link rel="stylesheet" href="__STATIC__/zhuanshi/css/grid.css">
+    <link rel="stylesheet" href="__STATIC__/zhuanshi/css/style.css">
+    <link rel="stylesheet" href="__STATIC__/zhuanshi/css/normalize.css">
+    <link rel="stylesheet" href="__STATIC__/zhuanshi/css/in.css">
+    <script src="__STATIC__/zhuanshi/js/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="__STATIC__/zhuanshi/js/jquery-1.8.3.min.js"><\/script>')</script>
+    <script src="__STATIC__/zhuanshi/js/html5.js"></script>
+    <script src="__STATIC__/zhuanshi/js/main.js"></script>
+    <script src="__STATIC__/zhuanshi/js/radio.js"></script>
+    <script src="__STATIC__/zhuanshi/js/checkbox.js"></script>
+    <script src="__STATIC__/zhuanshi/js/selectBox.js"></script>
+    <script src="__STATIC__/zhuanshi/js/jquery.carouFredSel-5.2.2-packed.js"></script>
+    <script src="__STATIC__/zhuanshi/js/jquery.jqzoom-core.js"></script>
+    <script src="__STATIC__/zhuanshi/js/jquery.transit.js"></script>
+    <script src="__STATIC__/zhuanshi/js/jquery.easing.1.2.js"></script>
+    <script src="__STATIC__/zhuanshi/js/jquery.anythingslider.js"></script>
+    <script src="__STATIC__/zhuanshi/js/jquery.anythingslider.fx.js"></script>
+    <script src="__STATIC__/bootstrap-3.3.4-dist/js/bootstrap.js"></script>
+    <style>
+        .star_score{
+            overflow: hidden;
+        }
+        .star_score span{
+            float: left;
+            width: 20px;
+            height: 20px;
+
+            background: url(__STATIC__/static/h-ui/images/star/iconpic-star-S-default.png) no-repeat;
+            background-size: 100%;
+            cursor: pointer;
+        }
+        .star_score span.active, .star_score span.select{
+            background: url(__STATIC__/static/h-ui/images/star/iconpic-star-S.png) no-repeat;
+            background-size: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="top">
+    <div class="container_12">
+        <div class="grid_3">
+            <div class="lang">
+
+            </div><!-- .lang -->
+
+            <div class="currency">
+
+            </div><!-- .currency -->
+        </div><!-- .grid_3 -->
+
+        <div class="grid_9">
+            <nav>
+                <ul>
+
+                    {empty name="$Think.session.member_id"}
+                    <li><a href="javascript:;" onclick="member_login('登录','/home/member/login','','600')" class="btn btn-primary radius">登录</a></li>
+                    <li><a href="javascript:;" onclick="member_add('注册','/home/member/add','500','510')" class="btn btn-primary radius">注册</a></li>
+                    {else /}
+                    <li><a href="{:url("home/member/member_detail")}">{$Think.session.member.name}</a></li>
+                    <li> <a onClick="loginout()" href="javascript:;" >注销</a></li>
+
+                    {/empty}
+
+                </ul>
+            </nav>
+        </div><!-- .grid_9 -->
+    </div>
+</div><!-- #top -->
+
+<header>
+    <div class="container_12">
+        <div class="grid_3">
+            <hgroup>
+                <h1 id="site_logo"><a href="{:url("home/index/index")}"><img src="__STATIC__/zhuanshi/img/logo.png" alt="Online Store Theme Logo"></a></h1>
+                <h2 id="site_description">Online Store Theme</h2>
+            </hgroup>
+        </div><!-- .grid_3 -->
+
+        <div class="grid_9">
+            <div class="top_header">
+                <ul id="cart_nav">
+                    <li>
+                        <a class="cart_li" href="#">
+                            购物车 <div class="cart_ico"></div>
+
+                        </a>
+
+
+
+                        <ul class="cart_cont">
+                            <li class="no_border recently">购物车</li>
+
+                            {volist name="car" id="pp"}
+                            <li class="class{$pp.goods_id}">
+                                <?php $img=explode(",",$pp["imageurl"]);?>
+                                <a href="{:url("home/goods/detail",["id"=>$pp["goods_id"]])}" class="prev_cart"><div class="cart_vert"><img src="{$img.0}" alt="{$pp.goods_name}" title="{$pp.goods_name}"></div></a>
+                                <div class="cont_cart">
+                                    <h4>{$pp.goods_name}</h4>
+                                    <div class="price">{$pp.number} X <span>{$pp.price}元</span></div>
+                                </div>
+                                <a onClick="del_car(this,'{$pp.goods_id}')" href="javascript:;" title="close" class="close"></a>
+                                <div class="clear"></div>
+                            </li>
+                            {/volist}
+
+
+
+
+                            <li class="no_border">
+                                <a href="{:url("home/car/car_list")}" class="view_cart">查看购物车</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul><!-- .cart_nav -->
+
+
+            </div><!-- .top_header -->
+
+            <nav class="primary">
+                <ul>
+                    <li class="curent"><a href="{:url("home/index/index")}">首页</a></li>
+
+                    {volist name="catedata" id="pp"}
+                    {if condition="$pp.pid eq 0"}
+
+                    <li class="parent">
+                        <a href="{:url("home/goods/bycate",["id"=>$pp["id"]])}">{$pp.name}</a>
+                        <?php $id=$pp["id"];?>
+                        <ul class="sub">
+                            {volist name="catedata" id="pp1"}
+
+                            {if condition="$pp1.pid eq $id"}
+                            <li> <a href="{:url("home/goods/bycate",["id"=>$pp1["id"]])}">{$pp1.name}</a></li>
+                            <div class="xuangou_left fl">
+                                {else /}{/if}
+
+                                {/volist}
+                        </ul>
+
+
+
+                    </li>
+                    {else /}{/if}
+
+
+                    {/volist}
+
+
+                </ul>
+            </nav><!-- .primary -->
+        </div><!-- .grid_9 -->
+    </div>
+</header>

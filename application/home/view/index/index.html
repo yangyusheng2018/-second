@@ -1,0 +1,221 @@
+{include file="/public/header"}
+
+    <div id="slider_body">
+        <ul id="slider">
+            <li>
+                <div class="slid_content">
+                    <h2 style="color:#6f566f;">Engagement Rings</h2>
+                    <p style="color:#6f566f;">The hardest part is over – you’ve found the love of<br>
+                    your life. Now is the time to find the perfect diamond<br>
+                    engagement ring and plan a beautiful proposal.</p>
+                    <a class="buy_now" href="#">Buy now</a>
+                </div><!-- .slid_content -->
+                <img src="__STATIC__/zhuanshi/img/content/slid-1.png" alt="Slid 1" title="">
+            </li>
+
+            <li>
+                <div class="slid_content">
+                    <h2 style="color:#744747;">Precious Metals</h2>
+                    <p style="color:#744747;">There’s no gift quite like diamond jewelry. Whether<br>
+                    you’re looking for a diamond ring, bracelet,<br>
+                    earrings or necklace, we’ll give you tips.</p>
+                    <a class="buy_now" href="#">Buy now</a>
+                </div><!-- .slid_content -->
+                <img src="__STATIC__/zhuanshi/img/content/slid-2.png" alt="Slid 2" title="">
+            </li>
+
+            <li>
+                <div class="slid_content">
+                    <h2 style="color:#6d5956;">Handmade jewelry</h2>
+                    <p style="color:#6d5956;">Congratulations on your engagement. As you<br>
+                    begin to plan the many details of your wedding<br>
+                    day, don’t forget the rings!</p>
+                    <a class="buy_now" href="#">Buy now</a>
+                </div><!-- .slid_content -->
+                <img src="__STATIC__/zhuanshi/img/content/slid-3.png" alt="Slid 3" title="">
+            </li>
+        </ul>
+    </div><!-- #slider_body -->
+    
+
+
+
+    <section id="main" class="home">
+        <div class="container_12">
+            <div id="content">
+                <div class="grid_12">
+                    <h2 class="product-title">打折产品</h2>
+                </div><!-- .grid_12 -->
+
+                <div class="clear"></div>
+
+                <div class="products">
+
+                    {volist name="discount" id="pp" offset="1" length='4'}
+                    <?php $img=explode(",",$pp["imageurl"]);?>
+                    <?php $prices=$pp["discount"]*$pp["saleprice"]*0.1;?>
+                    <article class="grid_3 article heights">
+                        <img class="sale" src="__STATIC__/zhuanshi/img/sale.png" alt="Sale">
+                        <div class="prev">
+                            <a href="{:url("home/goods/detail",["id"=>$pp["id"]])}"><img src="{$img.2}" alt="{$pp.goods_name}" title="{$pp.goods_name}"></a>
+                        </div><!-- .prev -->
+
+                        <h3 class="title">{$pp.goods_name}<br>{$pp.description}</h3>
+                        <div class="cart">
+                            <div class="price">
+                                <div class="vert">
+                                    <{$prices}元 ><br></br>{if condition="$pp['discount'] != 10"}打{$pp.discount}折
+                                    <div class="price_old">{$pp.saleprice}元  </div>{/if}
+                                </div>
+                            </div>
+                            <a onClick="add_like(this,'{$pp.id}')" href="javascript:;" title="收藏" class="like"></a>
+                            <a onClick="add_goods(this,'{$pp.id}')" href="javascript:;" title="添加购物车" class="bay"><img src="__STATIC__/zhuanshi/img/bg_cart.png" alt="Buy" title=""></a>
+                        </div><!-- .cart -->
+
+                    </article><!-- .grid_3.article -->
+                    {/volist}
+                    <div class="clear"></div>
+                </div><!-- .products -->
+                <div class="clear"></div>
+            </div><!-- #content -->
+
+            <div id="content">
+                <div class="grid_12">
+                    <h2 class="product-title">新产品</h2>
+                </div><!-- .grid_12 -->
+
+                <div class="clear"></div>
+
+                <div class="products">
+
+                    {volist name="good" id="pp" offset="1" length='4'}
+                    <?php $img=explode(",",$pp["imageurl"]);?>
+                    <?php $prices=$pp["discount"]*$pp["saleprice"]*0.1;?>
+                    <article class="grid_3 article heights">
+                        <img class="sale" src="__STATIC__/zhuanshi/img/new.png" alt="Sale">
+                        <div class="prev">
+                            <a href="{:url("home/goods/detail",["id"=>$pp["id"]])}"><img src="{$img.2}" alt="{$pp.goods_name}" title="{$pp.goods_name}"></a>
+                        </div><!-- .prev -->
+
+                        <h3 class="title">{$pp.goods_name}<br>{$pp.description}</h3>
+                        <div class="cart">
+                            <div class="price">
+                                <div class="vert">
+                                    <{$prices}元 ><br></br>{if condition="$pp['discount'] != 10"}打{$pp.discount}折
+                                    <div class="price_old">{$pp.saleprice}元  </div>{/if}
+                                </div>
+                            </div>
+
+                            <a onClick="add_like(this,'{$pp.id}')" href="javascript:;" title="收藏" class="like"></a>
+                            <a onClick="add_goods(this,'{$pp.id}')" href="javascript:;" title="添加购物车" class="bay"><img src="__STATIC__/zhuanshi/img/bg_cart.png" alt="Buy" title=""></a>
+                        </div><!-- .cart -->
+
+                    </article><!-- .grid_3.article -->
+                    {/volist}
+                    <div class="clear"></div>
+                </div><!-- .products -->
+                <div class="clear"></div>
+            </div><!-- #content -->
+
+            <div id="content">
+                <div class="grid_12">
+                    <h2 class="product-title">热卖产品</h2>
+                </div><!-- .grid_12 -->
+
+                <div class="clear"></div>
+
+                <div class="products">
+
+                    {volist name="start" id="pp" offset="1" length='4'}
+                    <?php $img=explode(",",$pp["imageurl"]);?>
+                    <?php $prices=$pp["discount"]*$pp["saleprice"]*0.1;?>
+                    <article class="grid_3 article heights">
+                        <img class="sale" src="__STATIC__/zhuanshi/img/top.png" alt="Sale">
+                        <div class="prev">
+                            <a href="{:url("home/goods/detail",["id"=>$pp["id"]])}"><img src="{$img.2}" alt="{$pp.goods_name}" title="{$pp.goods_name}"></a>
+                        </div><!-- .prev -->
+
+                        <h3 class="title">{$pp.goods_name}<br>{$pp.description}</h3>
+                        <div class="cart">
+                            <div class="price">
+                                <div class="vert">
+                                    <{$prices}元 ><br></br>{if condition="$pp['discount'] != 10"}打{$pp.discount}折
+                                    <div class="price_old">{$pp.saleprice}元  </div>{/if}
+                                </div>
+                            </div>
+                            <a onClick="add_like(this,'{$pp.id}')" href="javascript:;" title="收藏" class="like"></a>
+                            <a onClick="add_goods(this,'{$pp.id}')" href="javascript:;" title="添加购物车" class="bay"><img src="__STATIC__/zhuanshi/img/bg_cart.png" alt="Buy" title=""></a>
+                        </div><!-- .cart -->
+
+                    </article><!-- .grid_3.article -->
+                    {/volist}
+                    <div class="clear"></div>
+                </div><!-- .products -->
+                <div class="clear"></div>
+            </div><!-- #content -->
+
+
+            <div class="clear"></div>
+
+            <div id="brands">
+                <div class="c_header">
+                    <div class="grid_10">
+                        <h2>品牌分类</h2>
+                    </div><!-- .grid_10 -->
+
+                    <div class="grid_2">
+                        <a id="next_c1" class="next arows" href="#"><span>Next</span></a>
+                        <a id="prev_c1" class="prev arows" href="#"><span>Prev</span></a>
+                    </div><!-- .grid_2 -->
+                </div><!-- .c_header -->
+
+                <div class="brands_list">
+                    <ul id="listing">
+                        {volist name="branddata" id="pp"}
+
+                        <li>
+                            <div class="grid_2">
+                                <a href="{:url("home/goods/bybrand",["id"=>$pp["id"]])}"><div><img src="{$pp.logo}" alt="Brand 1" title=""></div></a>
+                            </div><!-- .grid_2 -->
+                        </li>
+
+                        {/volist}
+                    </ul><!-- #listing -->
+                </div><!-- .brands_list -->
+            </div><!-- #brands -->
+
+            <div id="content_bottom">
+                <div class="grid_6">
+                    <div class="bottom_block about_as">
+                        <h3>关于我们</h3>
+                        <p>关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们</p>
+                        <p>关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们</p>
+                        <p>关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们关于我们</p>
+                    </div><!-- .about_as -->
+                </div><!-- .grid_6 -->
+
+                <div class="grid_6">
+                    <div class="bottom_block news">
+                        <h3>新闻</h3>
+                        <ul>
+                            {volist name="article" id="pp" }
+                                <time datetime="{$pp.create_time}">{$pp.create_time}</time>
+                              <a href="{:url("home/article/byid",["id"=>$pp["id"]])}">{$pp.title}</a><br>
+                               <p>{$pp.description}</p>
+                            </li>
+                            {/volist}
+
+                        </ul>
+                    </div><!-- .news -->
+                </div><!-- .grid_6 -->
+                <div class="clear"></div>
+            </div><!-- #content_bottom -->
+        </div><!-- .container_12 -->
+    </section><!-- #main.home -->
+
+{include file="/public/footer"}
+
+{include file="/public/js"}
+</body>
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+</html>

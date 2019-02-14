@@ -1,0 +1,359 @@
+{include file="/public/header"}
+    
+    <div class="breadcrumbs">
+        <div class="container_12">
+            <div class="grid_12">
+                 <a href="index.html">Home</a><span></span><a href="#">Category</a><span></span><span class="current">This page</span>
+            </div><!-- .grid_12 -->
+        </div><!-- .container_12 -->
+    </div><!-- .breadcrumbs -->
+
+    <section id="main">
+        <div class="container_12">
+            <div id="content" class="grid_12">
+                <header>
+                    <h1 class="page_title">{$data.goods_name}</h1>
+                </header>
+                    
+                <article class="product_page">
+                    <div class="grid_5 img_slid" id="products">
+			<div class="preview slides_container">
+			    <div class="prev_bg">
+                    <?php $img=explode(",",$data["imageurl"]);?>
+
+				<a href="{$img.1}" class="jqzoom" rel='gal1' title="">
+				    <img src="{$img.1}" alt="Product 1" title="">
+				</a>
+			    </div>
+			</div><!-- .preview -->
+                        
+                        <div class="next_prev">
+			    <a id="img_prev" class="arows" href="#"><span>Prev</span></a>
+			    <a id="img_next" class="arows" href="#"><span>Next</span></a>
+			</div><!-- .next_prev -->
+
+			<ul class="small_img clearfix" id="thumblist">
+			    <li><a class="zoomThumbActive" href='javascript:void(0);' rel="{gallery: 'gal1', smallimage: '{$img.1}',largeimage: '{$img.1}'}"><img src='{$img.1}' alt=""></a></li>
+			    <li><a href='javascript:void(0);' rel="{gallery: 'gal1', smallimage: '{$img.2}',largeimage: '{$img.2}'}"><img src='{$img.2}' alt=""></a></li>
+			    <li><a href='javascript:void(0);' rel="{gallery: 'gal1', smallimage: '{$img.3}',largeimage: '{$img.3}'}"><img src='{$img.3}' alt=""></a></li>
+			    <li><a href='javascript:void(0);' rel="{gallery: 'gal1', smallimage: '{$img.0}',largeimage: '{$img.0}'}"><img src='{$img.0}' alt=""></a></li>
+			</ul><!-- .small_img -->
+
+			<div id="pagination"></div>
+		    </div><!-- .grid_5 -->
+                    
+                    <div class="grid_7">
+			<div class="entry_content">
+                            <div class="soc">
+				<img src="__STATIC__/zhuanshi/img/soc.png" alt="Soc">
+			    </div><!-- .soc -->
+                            
+			    <div class="review">
+                    <?php $t_score=round($data["score"],2); ?>
+                    <?php $z_score=round($data["score"],0); ?>
+                    <?php echo str_repeat('<a class="plus" href="#"></a>', $z_score);?>
+                    <?php echo str_repeat('<a href="#"></a>', 5-$data['score']);?>    <span>评分：{$t_score}</span>
+                    <span><strong>{$data["c_count"]}</strong>条评论</span>
+                                <span class="separator">|</span>
+
+			    </div>
+                            
+			    <p>{$data["description"]}</p>
+                            
+                            <div class="ava_price price">
+                                <div class="price">
+                                    <div class="price_old">{$data.marketprice}</div>
+                                    {$data.saleprice}元
+                                    {if condition="($data.discount != 10) AND ($data.discount != NULL) "}（再打{$data.discount}折）{else /}
+                                    {/if}
+				</div><!-- .price -->
+                                
+
+                                <div class="clear"></div>
+			    </div><!-- .ava_price -->
+                            
+                            <div class="parameter_selection">
+                                <select>
+                                    <option>Select a size</option>
+                                    <option>Select a size</option>
+                                </select>
+                                <select>
+                                    <option>Choose a material</option>
+                                    <option>Choose a material</option>
+                                </select>
+			    </div><!-- .parameter_selection -->
+
+			    <div class="cart">
+                    <a onClick="add_goods(this,'{$data.id}')" href="javascript:;" title="添加购物车" class="bay"><img src="__STATIC__/zhuanshi/img/bg_cart.png" alt="Buy" title="">添加到购物车</a>
+                    <a onClick="add_like(this,'{$data.id}')" href="javascript:;" title="收藏" class="like"><img src="__STATIC__/zhuanshi/img/like.png" alt="" title=""> 收藏</a>
+
+                            </div><!-- .cart -->
+
+			</div><!-- .entry_content -->
+		    </div><!-- .grid_7 -->
+		    <div class="clear"></div>
+
+                    <div class="grid_12" >
+			<div id="wrapper_tab" class="tab1">
+			    <a href="#" class="tab1 tab_link">介绍</a>
+			    <a href="#" class="tab2 tab_link">评论</a>
+			    <a href="#" class="tab3 tab_link">数据</a>
+
+			    <div class="clear"></div>
+
+			    <div class="tab1 tab_body">
+                    {$data.content}
+
+			    </div><!-- .tab1 .tab_body -->
+
+			    <div class="tab2 tab_body">
+				<h4>评论</h4>
+
+                                <ul class="comments">
+                                    {volist name="comments" id="pp"}
+				    <li>
+					<div class="autor">{$pp.member}</div>, <time datetime="{$pp.create_time}">{$pp.create_time}</time>
+
+					<div class="evaluation">
+					    <div class="quality">
+                            <?php $pp["score"]=round($pp["score"],0); ?>
+                            <?php echo str_repeat('<a class="plus" href="#"></a>', $pp['score']);?>
+                            <?php echo str_repeat('<a href="#"></a>', 5-$pp['score']);?>
+
+					    </div>
+
+					    <div class="clear"></div>
+					</div><!-- .evaluation -->
+
+					<p>{$pp.content}</p>
+                                    </li>
+            {/volist}
+
+				</ul><!-- .comments -->
+
+                    {empty name="$Think.session.member"}
+                    <strong>登陆后才能评论</strong><sup>*</sup><br>
+                    <li><a href="javascript:;" onclick="member_login('登录','/home/member/login','','600')" class="btn btn-primary radius">点击登录</a></li>
+                   
+                    {else /}
+                    <form action="" class="add_comments" id="form_add_comments">
+                        <h4>写下你的评论</h4>
+
+                        打分：  <div class="star_score"></div>
+
+
+                        <div class="text_review">
+                            <strong>评论</strong><sup>*</sup><br>
+                            <textarea name="content"></textarea><br>
+
+                        </div><!-- .text_review -->
+                        <input hidden name="goods_id" value="{$data.id}">
+
+                        <div class="clear"></div>
+
+                        <input onclick="add_comment()" type="submit" name="submit" id="submit" value="提交">
+                    </form><!-- .add_comments -->
+                    {/empty}
+
+
+                                <div class="clear"></div>
+			    </div><!-- .tab2 .tab_body -->
+
+			    <div class="tab3 tab_body">
+				<h4>Custom Tab</h4>
+				<div class="clear"></div>
+			    </div><!-- .tab3 .tab_body -->
+			    <div class="clear"></div>
+			</div>​<!-- #wrapper_tab -->
+			<div class="clear"></div>
+		    </div><!-- .grid_12 -->
+
+		</article><!-- .product_page -->
+
+                <div class="related grid_12">
+
+                        <div class="c_header">
+                            <div class="grid_10">
+                                <h2>Related Products</h2>
+                            </div><!-- .grid_10 -->
+
+                            <div class="grid_2">
+                                <a id="next_c1" class="next arows" href="#"><span>Next</span></a>
+                                <a id="prev_c1" class="prev arows" href="#"><span>Prev</span></a>
+                            </div><!-- .grid_2 -->
+                        </div><!-- .c_header -->
+
+                        <div class="related_list">
+                            <ul id="listing" class="products">
+                                <li>
+                                    <article class="grid_3 article">
+                                        <img class="sale" src="__STATIC__/zhuanshi/img/sale.png" alt="Sale">
+                                        <div class="prev">
+                                            <a href="product_page.html"><img src="__STATIC__/zhuanshi/img/content/product1.png" alt="Product 1" title=""></a>
+                                        </div><!-- .prev -->
+
+                                        <h3 class="title">handmade Emerald Cut<br> Emerald Ring</h3>
+                                        <div class="cart">
+                                            <div class="price">
+                                                <div class="vert">
+                                                    $550.00
+                                                    <div class="price_old">$725.00</div>
+                                                </div>
+                                            </div>
+                                            <a href="#" class="obn"></a>
+                                            <a href="#" class="like"></a>
+                                            <a href="#" class="bay"><img src="__STATIC__/zhuanshi/img/bg_cart.png" alt="Buy" title=""></a>
+                                        </div><!-- .cart -->
+                                    </article><!-- .grid_3.article -->
+                                </li>
+
+                                <li>
+                                    <article class="grid_3 article">
+                                        <div class="prev">
+                                             <a href="product_page.html"><img src="__STATIC__/zhuanshi/img/content/product2.png" alt="Product 2" title=""></a>
+                                        </div><!-- .prev -->
+
+                                        <h3 class="title">beautiful Valentine And Engagement</h3>
+                                        <div class="cart">
+                                            <div class="price">
+                                                <div class="vert">
+                                                    $550.00
+                                                    <div class="price_old">$725.00</div>
+                                                </div>
+                                            </div>
+                                            <a href="#" class="obn"></a>
+                                            <a href="#" class="like"></a>
+                                            <a href="#" class="bay"><img src="__STATIC__/zhuanshi/img/bg_cart.png" alt="Buy" title=""></a>
+                                        </div><!-- .cart -->
+                                    </article><!-- .grid_3.article -->
+                                </li>
+
+                                <li>
+                                    <article class="grid_3 article">
+                                        <img class="sale" src="__STATIC__/zhuanshi/img/new.png" alt="New">
+                                        <div class="prev">
+                                            <a href="product_page.html"><img src="__STATIC__/zhuanshi/img/content/product3.png" alt="Product 3" title=""></a>
+                                        </div><!-- .prev -->
+
+                                        <h3 class="title">Emerald Cut Emerald Ring</h3>
+                                        <div class="cart">
+                                            <div class="price">
+                                                <div class="vert">
+                                                    $550.00
+                                                    <div class="price_old">$725.00</div>
+                                                </div>
+                                            </div>
+                                            <a href="#" class="obn"></a>
+                                            <a href="#" class="like"></a>
+                                            <a href="#" class="bay"><img src="__STATIC__/zhuanshi/img/bg_cart.png" alt="Buy" title=""></a>
+                                        </div><!-- .cart -->
+                                    </article><!-- .grid_3.article -->
+                                </li>
+
+                                <li>
+                                    <article class="grid_3 article">
+                                        <div class="prev">
+                                            <a href="product_page.html"><img src="__STATIC__/zhuanshi/img/content/product4.png" alt="Product 4" title=""></a>
+                                        </div><!-- .prev -->
+
+                                        <h3 class="title">Diamond Necklaces and Pendants</h3>
+                                        <div class="cart">
+                                            <div class="price">
+                                                <div class="vert">
+                                                    $550.00
+                                                    <div class="price_old">$725.00</div>
+                                                </div>
+                                            </div>
+                                            <a href="#" class="obn"></a>
+                                            <a href="#" class="like"></a>
+                                            <a href="#" class="bay"><img src="__STATIC__/zhuanshi/img/bg_cart.png" alt="Buy" title=""></a>
+                                        </div><!-- .cart -->
+                                    </article><!-- .grid_3.article -->
+                                </li>
+
+                                <li>
+                                    <article class="grid_3 article">
+                                        <div class="prev">
+                                            <a href="product_page.html"><img src="__STATIC__/zhuanshi/img/content/product5.png" alt="Product 5" title=""></a>
+                                        </div><!-- .prev -->
+
+                                        <h3 class="title">Emerald Diamond Solitaire</h3>
+                                        <div class="cart">
+                                            <div class="price">
+                                                <div class="vert">
+                                                    $550.00
+                                                    <div class="price_old">$725.00</div>
+                                                </div>
+                                            </div>
+                                            <a href="#" class="obn"></a>
+                                            <a href="#" class="like"></a>
+                                            <a href="#" class="bay"><img src="__STATIC__/zhuanshi/img/bg_cart.png" alt="Buy" title=""></a>
+                                        </div><!-- .cart -->
+                                    </article><!-- .grid_3.article -->
+                                </li>
+                            </ul><!-- #listing -->
+                         </div><!-- .brands_list -->
+                </div><!-- .related -->
+
+                <div class="clear"></div>
+            </div><!-- #content -->
+
+            <div class="clear"></div>
+        </div><!-- .container_12 -->
+    </section><!-- #main -->
+    <div class="clear"></div>
+
+{include file="/public/footer"}
+
+{include file="/public/js"}
+<script type="text/javascript">
+
+
+    function add_comment() {
+       var score=$(".star_score span.select").size()
+       var datas=$('#form_add_comments').serialize();
+        datas=datas+"&score="+score;
+        $.ajax({
+            //几个参数需要注意一下
+            type: "POST",//方法类型
+            dataType: "json",//预期服务器返回的数据类型
+            url: "{:url('comment/add_comment')}" ,//url
+            data: datas,
+            success: function (result) {
+                console.log(result);//打印服务端返回的数据(调试用)
+                if (result.status == 1) {
+                    alert(result.message);
+                    window.location.reload();
+                }
+                ;
+            },
+            error : function() {
+                alert(result.message);
+            }
+        });
+    }
+
+    function checkLogin() {
+        $.ajax({
+            //几个参数需要注意一下
+            type: "POST",//方法类型
+            dataType: "json",//预期服务器返回的数据类型
+            url: "{:url('member/checkLogin')}" ,//url
+            data: $('#form_checkLogin').serialize(),
+            success: function (result) {
+                console.log(result);//打印服务端返回的数据(调试用)
+                if (result.status == 1) {
+                    alert(result.message);
+                    window.location.reload();
+                }
+                ;
+            },
+            error : function() {
+                alert(result.message);
+            }
+        });
+    }
+</script>
+</body>
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+</html>

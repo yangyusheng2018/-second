@@ -1,0 +1,115 @@
+﻿{include file="/pubulic/header"}
+{include file="/pubulic/body-header"}
+{include file="/pubulic/menu"}
+<form action="" method="post" class="form form-horizontal" id="form-goods-add" enctype="multipart/form-data">
+<section class="Hui-article-box">
+	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 图片管理 <span class="c-gray en">&gt;</span> 图片列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+	<div class="Hui-article">
+		<article class="cl pd-20">
+
+			<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l">
+				  <input class="btn btn-danger radius" type="button" name="submit" id="submit"  value="批量删除" onclick="alldel();">
+				<a href="javascript:;" onclick="add('添加','add','','800')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加</a>
+			<a href="javascript:;" onclick="unDelete()" class="btn btn-danger radius"> 批量恢复</a>
+			</span>
+				<span class="r">共有数据：<strong>{$count}</strong> 条</span> </div>
+			<div class="mt-20">
+				<table class="table table-border table-bordered table-bg table-hover table-sort">
+					<thead>
+						<tr class="text-c">
+							<th width="40"><input name="" type="checkbox" value=""></th>
+							<th width="40">ID</th>
+							<th width="100">标题</th>
+							<th width="100">简介</th>
+							<th width="100">内容</th>
+							<th width="100">操作</th>
+						</tr>
+					</thead>
+					<tbody>
+					{volist name="data" id="pp"}
+						<tr class="text-c">
+							<td><input name="delete_id[]" type="checkbox" value="{$pp.id}"></td>
+							<td>{$pp.id}</td>
+							<td>{$pp.title}</td>
+							<td>{$pp.description}</td>
+							<td>{$pp.content}</td>
+
+							<td class="td-manage">
+								<a title="编辑" href="javascript:;" onclick="goods_edit('编辑','{:url("article/edit",["id"=>$pp["id"]])}','2','1000','')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
+								<a style="text-decoration:none" class="ml-5" onClick="article_del(this,'{$pp.id}')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a>
+							</td>
+						</tr>
+					{/volist}
+					</tbody>
+				</table>
+			</div>
+		</article>
+	</div>
+</section>
+</form>
+<!--_footer 作为公共模版分离出去-->
+{include file="/pubulic/js"}
+<script type="text/javascript">
+$('.table-sort').dataTable({
+	"aaSorting": [[ 1, "desc" ]],//默认第几个排序
+	"bStateSave": true,//状态保存
+	"aoColumnDefs": [
+	  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
+	  // {"orderable":false,"aTargets":[0,8]}// 制定列不参与排序
+	]
+});
+function goods_edit(title,url,id,w,h){
+	layer_show(title,url,w,h);
+}
+/*图片-添加*/
+function add(title,url,w,h){
+    layer_show(title,url,w,h);
+}
+/*图片-查看*/
+/*图片-审核*/
+
+function unDelete() {
+	layer.confirm('确认要恢复吗？', function () {
+		$.get("{:url('goods/unDelete')}");
+
+		layer.msg('已恢复!', {icon: 1, time: 1000}); //消息弹层1秒后消失
+		window.location.reload(); //重新加载页面,显示所有数据
+	});
+}
+/*图片-申请上线*/
+/*图片-编辑*/
+/*图片-删除*/
+function article_del(obj,id){
+	layer.confirm('确认要删除吗？',function(index){
+		$.get("{:url('article/delete')}",{id:id});
+		$(obj).parents("tr").remove();
+		layer.msg('已删除!',{icon:1,time:1000});
+	});
+}
+
+function alldel(){
+	var form = new FormData(document.getElementById("form-goods-add"));
+	$.ajax({
+		type: "POST",
+		url: "{:url('article/alldelete')}",
+		processData:false,
+		contentType:false,
+		data:form,
+		dataType: "json",
+		success: function(data){
+			if (data.status == 1) {
+				alert(data.message);
+				window.parent.location.reload(); //刷新父页面
+				var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+				parent.layer.close(index);  // 关闭layer
+			} else {
+				alert(data.message);
+
+			}
+		}
+	});
+}
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>
